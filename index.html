@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinematic Birthday - Boro Bhai</title>
+    
+    <!-- Premium Elegant Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Confetti JS for Fireworks -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #03040b; /* Deep midnight blue/black */
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+        }
+
+        /* Ambient Background Glow */
+        .ambient-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(212,175,55,0.05) 0%, rgba(3,4,11,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            animation: pulseGlow 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        }
+
+        /* Fireflies / Magic Dust */
+        .firefly {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: #ffd700;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px #ffd700, 0 0 20px #ffaa00;
+            opacity: 0;
+            z-index: 1;
+            animation: floatUp var(--duration) ease-in infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-10vh) translateX(var(--drift)); opacity: 0; }
+        }
+
+        /* Slide Container */
+        .slide {
+            position: absolute;
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            /* Cinematic Blur Transition */
+            filter: blur(20px);
+            transform: scale(1.1);
+            transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            filter: blur(0);
+            transform: scale(1);
+        }
+
+        /* Typography */
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            line-height: 1.4;
+            font-weight: 700;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+
+        .text-gold {
+            /* Metallic Gold Gradient */
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 4px 20px rgba(212, 175, 55, 0.2);
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #a0a0b0;
+            font-weight: 300;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        /* Elegant Button */
+        .btn {
+            margin-top: 30px;
+            padding: 15px 45px;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #d4af37;
+            background: transparent;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Grand Finale Elements */
+        .finale-title {
+            font-size: 4.5rem;
+            margin-bottom: 10px;
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Ambient Background -->
+<div class="ambient-glow"></div>
+
+<!-- Fireflies Container -->
+<div id="fireflies"></div>
+
+<!-- Slides -->
+<div class="slide active" id="slide-0">
+    <h1 style="font-size: 2rem; color: #a0a0b0;">A Cinematic Experience</h1>
+    <p>Please turn up your volume 🎧</p>
+    <button class="btn" onclick="startJourney()">Begin</button>
+</div>
+
+<div class="slide" id="slide-1">
+    <h1>To the person I've always <br><span class="text-gold">looked up to...</span></h1>
+    <button class="btn" onclick="nextSlide()">Next</button>
+</div>
+
+<div class="slide" id="slide-2">
+    <h1>My guide, my protector, <br>my <span class="text-gold">Boro Bhai.</span></h1>
+    <button class="btn" onclick="nextSlide()">Next</button>
+</div>
+
+<div class="slide" id="slide-3">
+    <h1>You bring <span class="text-gold">light</span> <br>wherever you go.</h1>
+    <button class="btn" onclick="nextSlide()">Next</button>
+</div>
+
+<div class="slide" id="slide-4">
+    <h1>So tonight...</h1>
+    <button class="btn" onclick="nextSlide()">Next</button>
+</div>
+
+<div class="slide" id="slide-5">
+    <h1>Let the sky <span class="text-gold">light up</span> <br>just for you.</h1>
+    <p>Tap to reveal the magic ✨</p>
+    <button class="btn" onclick="triggerFireworks()">Ignite</button>
+</div>
+
+<div class="slide" id="slide-6">
+    <h1 class="finale-title text-gold">Happy Birthday<br>Bhai!</h1>
+    <p style="color: #ffffff; font-size: 1.5rem;">Wishing you endless success and joy. ❤️</p>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const totalSlides = 7;
+    let audioCtx;
+
+    // Create Magical Fireflies
+    function createFireflies() {
+        const container = document.getElementById('fireflies');
+        for (let i = 0; i < 30; i++) {
+            let firefly = document.createElement('div');
+            firefly.classList.add('firefly');
+            firefly.style.left = `${Math.random() * 100}vw`;
+            firefly.style.setProperty('--duration', `${Math.random() * 5 + 5}s`); // 5s to 10s
+            firefly.style.setProperty('--drift', `${(Math.random() - 0.5) * 200}px`);
+            firefly.style.animationDelay = `${Math.random() * 5}s`;
+            container.appendChild(firefly);
+        }
+    }
+    createFireflies();
+
+    // Cinematic Audio Engine
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+
+    // Play Magical Sparkle / Harp sound on click
+    function playMagicalChime() {
+        if (!audioCtx) return;
+        const frequencies = [523.25, 659.25, 783.99, 1046.50]; // C Major Arpeggio
+        let time = audioCtx.currentTime;
+        
+        frequencies.forEach((freq, index) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            
+            gain.gain.setValueAtTime(0, time + (index * 0.1));
+            gain.gain.linearRampToValueAtTime(0.1, time + (index * 0.1) + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + (index * 0.1) + 1.5);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(time + (index * 0.1));
+            osc.stop(time + (index * 0.1) + 1.5);
+        });
+    }
+
+    // Deep Cinematic Boom for the final reveal
+    function playCinematicBoom() {
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 1.5);
+        
+        gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 2.5);
+    }
+
+    function startJourney() {
+        initAudio();
+        nextSlide();
+    }
+
+    function nextSlide() {
+        if(currentSlide > 0) playMagicalChime(); 
+        
+        document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+        currentSlide++;
+        
+        if(currentSlide < totalSlides) {
+            document.getElementById(`slide-${currentSlide}`).classList.add('active');
+        }
+    }
+
+    function triggerFireworks() {
+        initAudio();
+        playCinematicBoom();
+        
+        // Hide current slide and show final slide
+        document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+        currentSlide++;
+        document.getElementById(`slide-${currentSlide}`).classList.add('active');
+
+        // Continuous Realistic Fireworks Loop using canvas-confetti
+        var duration = 15 * 1000;
+        var animationEnd = Date.now() + duration;
+        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        var interval = setInterval(function() {
+            var timeLeft = animationEnd - Date.now();
+            if (timeLeft <= 0) {
+                return clearInterval(interval);
+            }
+            var particleCount = 50 * (timeLeft / duration);
+            
+            // Firework 1
+            confetti(Object.assign({}, defaults, { 
+                particleCount, 
+                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                colors: ['#ffd700', '#ffaa00', '#ffffff'] // Gold and White fireworks
+            }));
+            // Firework 2
+            confetti(Object.assign({}, defaults, { 
+                particleCount, 
+                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                colors: ['#ff4500', '#ffd700', '#ff8c00'] // Fiery fireworks
+            }));
+        }, 250);
+    }
+</script>
+
+</body>
+</html>
